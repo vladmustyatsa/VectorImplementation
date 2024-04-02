@@ -200,11 +200,11 @@ class Vector {
         pointer operator->() const {return ptr;}
 
         bool operator==(const const_iterator& it) const {
-          return (it == static_cast<const_iterator>(*this));
+          return (it == *this);
         }
 
         bool operator!=(const const_iterator& it) const {
-          return (it != static_cast<const_iterator>(*this));
+          return (it != *this);
         }
 
         iterator& operator++() {
