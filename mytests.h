@@ -254,4 +254,318 @@ bool cout_operator() {
   return true;
 }
 
+bool iterator_deref_operator() {
+  Vector::iterator it1;
+  bool case1 = false;
+  try {
+    *it1;
+  } catch (runtime_error& e) {
+    case1 = true;
+  }
+  Vector v;
+  Vector::iterator it2 {v.begin()};
+  bool case2 = false;
+  try {
+    *it2;
+  } catch (runtime_error& e) {
+    case2 = true;
+  }
+
+  Vector vv {1,2};
+  Vector::iterator it3 {vv.begin()};
+  bool case3 = (*it3 == 1);
+
+  return (case1 && case2 && case3);
+}
+
+bool const_iterator_deref_operator() {
+  Vector::const_iterator it1;
+  bool case1 = false;
+  try {
+    *it1;
+  } catch (runtime_error& e) {
+    case1 = true;
+  }
+  Vector v;
+  Vector::const_iterator it2 {v.begin()};
+  bool case2 = false;
+  try {
+    *it2;
+  } catch (runtime_error& e) {
+    case2 = true;
+  }
+
+  Vector vv {1,2};
+  Vector::const_iterator it3 {vv.begin()};
+  bool case3 = (*it3 == 1);
+
+  return (case1 && case2 && case3);
+}
+
+bool iterator_arrow_operator() {
+  Vector::iterator it1;
+  bool case1 = false;
+  try {
+    it1.operator->();
+  } catch (runtime_error& e) {
+    case1 = true;
+  }
+  Vector v;
+  Vector::iterator it2 {v.begin()};
+  bool case2 = false;
+  try {
+    it2.operator->();
+  } catch (runtime_error& e) {
+    case2 = true;
+  }
+
+  Vector vv {1,2};
+  Vector::iterator it3 {vv.begin()};
+  bool case3 = (it3.operator->() == &vv[0]);
+
+  return (case1 && case2 && case3);
+}
+
+bool const_iterator_arrow_operator() {
+  Vector::const_iterator it1;
+  bool case1 = false;
+  try {
+    it1.operator->();
+  } catch (runtime_error& e) {
+    case1 = true;
+  }
+  Vector v;
+  Vector::const_iterator it2 {v.begin()};
+  bool case2 = false;
+  try {
+    it2.operator->();
+  } catch (runtime_error& e) {
+    case2 = true;
+  }
+
+  Vector vv {1,2};
+  Vector::const_iterator it3 {vv.begin()};
+  bool case3 = (it3.operator->() == &vv[0]);
+
+  return (case1 && case2 && case3);
+}
+
+bool iterator_equals() {
+  Vector::iterator it1;
+  Vector::iterator it2;
+  bool case1 = (it1 == it2);
+  
+  Vector v;
+  Vector::iterator it3 {v.begin()};
+  Vector::iterator it4 {v.end()};
+  bool case2 = (it3 == it4);
+  
+  Vector vv {1,2};
+  Vector::iterator it5 {vv.begin()};
+  Vector::iterator it6 {it5};
+  bool case3 = (it5 == it6);
+
+  return (case1 && case2 && case3);
+}
+
+bool const_iterator_equals() {
+  Vector::const_iterator it1;
+  Vector::const_iterator it2;
+  bool case1 = (it1 == it2);
+
+  Vector v;
+  Vector::const_iterator it3 {v.begin()};
+  Vector::const_iterator it4 {v.end()};
+  bool case2 = (it3 == it4);
+
+  Vector vv {1,2};
+  Vector::const_iterator it5 {vv.begin()};
+  Vector::const_iterator it6 {it5};
+  bool case3 = (it5 == it6);
+
+  return (case1 && case2 && case3);
+}
+
+bool iterator_not_equals() {
+  Vector::iterator it1;
+  Vector::iterator it2;
+  bool case1 = !(it1 != it2);
+
+  Vector v;
+  Vector::iterator it3 {v.begin()};
+  Vector::iterator it4 {v.end()};
+  bool case2 = !(it3 != it4);
+
+  Vector vv {1,2};
+  Vector::iterator it5 {vv.begin()};
+  Vector::iterator it6 {vv.end()};
+  bool case3 = (it5 != it6);
+
+  return (case1 && case2 && case3);
+}
+
+bool const_iterator_not_equals() {
+  Vector::const_iterator it1;
+  Vector::const_iterator it2;
+  bool case1 = !(it1 != it2);
+
+  Vector v;
+  Vector::const_iterator it3 {v.begin()};
+  Vector::const_iterator it4 {v.end()};
+  bool case2 = !(it3 != it4);
+
+  Vector vv {1,2};
+  Vector::const_iterator it5 {vv.begin()};
+  Vector::const_iterator it6 {vv.end()};
+  bool case3 = (it5 != it6);
+
+  return (case1 && case2 && case3);
+}
+
+bool plus_plus_iterator() {
+  Vector::iterator it1;
+  Vector::iterator it2 = it1;
+  ++it1;
+  bool case1 = (it1 == it2);
+
+  Vector v;
+  Vector::iterator it3 {v.begin()};
+  Vector::iterator it4 {v.end()};
+  ++it3;
+  bool case2 = (it3 == it4);
+  
+  Vector vv {1,2};
+  Vector::iterator it5 {vv.begin()};
+  Vector::iterator it6 {vv.end()};
+  ++it5;
+  bool case3 = (++it5 == it6);
+  
+  return (case1 && case2 && case3);
+}
+
+bool plus_plus_const_iterator() {
+  Vector::const_iterator it1;
+  Vector::const_iterator it2 = it1;
+  ++it1;
+  bool case1 = (it1 == it2);
+
+  Vector v;
+  Vector::const_iterator it3 {v.begin()};
+  Vector::const_iterator it4 {v.end()};
+  ++it3;
+  bool case2 = (it3 == it4);
+
+  Vector vv {1,2};
+  Vector::const_iterator it5 {vv.begin()};
+  Vector::const_iterator it6 {vv.end()};
+  ++it5;
+  bool case3 = (++it5 == it6);
+
+  return (case1 && case2 && case3);
+}  
+
+bool iterator_plus_plus() {
+  Vector::iterator it1;
+  Vector::iterator it2 = it1;
+  it1++;
+  bool case1 = (it1 == it2);
+
+  Vector v;
+  Vector::iterator it3 {v.begin()};
+  Vector::iterator it4 {v.end()};
+  it3++;
+  bool case2 = (it3 == it4);
+
+  Vector vv {1,2};
+  Vector::iterator it5 {vv.begin()};
+  Vector::iterator it6 {vv.begin()};
+  bool case31 = (it5++ == it6);
+  it5++;
+  bool case32 = (it5 == vv.end()); 
+  
+
+  return (case1 && case2 && case31 && case32);
+}
+
+bool const_iterator_plus_plus() {
+  Vector::const_iterator it1;
+  Vector::const_iterator it2 = it1;
+  it1++;
+  bool case1 = (it1 == it2);
+
+  Vector v;
+  Vector::const_iterator it3 {v.begin()};
+  Vector::const_iterator it4 {v.end()};
+  it3++;
+  bool case2 = (it3 == it4);
+
+  Vector vv {1,2};
+  Vector::const_iterator it5 {vv.begin()};
+  Vector::const_iterator it6 {vv.begin()};
+  bool case31 = (it5++ == it6);
+  it5++;
+  bool case32 = (it5 == vv.end()); 
+
+
+  return (case1 && case2 && case31 && case32);
+}
+
+bool operator_const_iterator() {
+  Vector::iterator it1;
+  Vector::const_iterator it2 = it1;
+  bool case1 = (it1 == it2);
+
+  Vector v;
+  Vector::iterator it3 {v.begin()};
+  Vector::const_iterator it4 = it3;
+
+  bool case2 = (it3 == it4);
+
+  Vector vv {1,2};
+  Vector::iterator it5 {vv.begin()};
+  Vector::const_iterator it6 = it5;
+  bool case3 = (it5 == it6);
+
+  return (case1 && case2 && case3);
+}
+
+bool insert() {
+  Vector v1(1);
+  v1.insert(v1.begin(), 2);
+  Vector v2 {2};
+  bool case1 = (v1 == v2);
+
+
+  Vector v3 {1,2,3};
+  v3.insert(v3.end(), 4);
+  Vector v4 {1,2,3,4};
+  bool case2 = true;
+  for (Vector::size_type i=0; i < v3.size(); ++i)
+    if (v3[i] != v4[i]) {
+      case2 = false;
+      break;
+    }
+  
+  return (case1 && case2);
+}
+
+bool erase() {
+  Vector v1 {1,2,3};
+  v1.erase(v1.begin());
+  Vector v2 {2,3};
+  bool case1 = true;
+  for (Vector::size_type i=0; i < v1.size(); ++i)
+    if (v1[i] != v2[i]) {
+      case1 = false;
+      break;
+    }
+  return case1;
+}
+
+bool iterator_constancy() {
+  const Vector v{1,2,3};
+  auto it = v.begin();
+  //*it = 1; check "constancy" by uncommenting it
+  return true;
+}
 #endif

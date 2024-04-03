@@ -80,7 +80,7 @@ class Vector {
         void reserve(size_type n) {
           if (max_sz < n) {
             if(sz != 0) {
-              value_type* tmp = new value_type[n];
+              pointer tmp = new value_type[n];
               for (size_type i = 0; i < sz; i++)
                 tmp[i] = values[i];
               delete[] values;
@@ -96,7 +96,7 @@ class Vector {
 
         void shrink_to_fit() {
           if (sz < max_sz) {
-            value_type* tmp = sz ? new value_type[sz] : nullptr;
+            pointer tmp = sz ? new value_type[sz] : nullptr;
             for (size_type i = 0; i < sz; i++)
               tmp[i] = values[i];
             if(values)
@@ -118,13 +118,13 @@ class Vector {
           --sz;
         }
 
-        value_type& operator[](size_type index) {
+        reference operator[](size_type index) {
           if (index < 0 || index >= sz)
             throw std::runtime_error("Index out of range");
           return values[index];
         }
 
-        const value_type& operator[](size_type index) const {
+        const_reference operator[](size_type index) const {
           if (index < 0 || index >= sz)
             throw std::runtime_error("Index out of range");
           return values[index];
@@ -139,7 +139,9 @@ class Vector {
         }
 
         iterator end() {
-          return iterator(values+sz);
+          if(values)
+            return iterator(values+sz);
+          return iterator();
         }
 
         const_iterator begin() const {
@@ -147,7 +149,9 @@ class Vector {
         }
 
         const_iterator end() const {
-          return const_iterator(values+sz);
+          if(values)
+            return const_iterator(values+sz);
+          return const_iterator();
         }
 
         
@@ -195,26 +199,38 @@ class Vector {
       public:
         Iterator() : ptr{nullptr} {};
         Iterator(pointer ptr) : ptr{ptr} {};
+        
     
-        reference operator*() const {return *ptr;}
-        pointer operator->() const {return ptr;}
+        reference operator*() const {
+          if(ptr == nullptr)
+            throw std::runtime_error("ptr is nullptr");
+          return *ptr;
+        }
+        pointer operator->() const {
+          if(ptr == nullptr)
+            throw std::runtime_error("ptr is nullptr");
+          return ptr;
+        }
 
         bool operator==(const const_iterator& it) const {
           return (it == *this);
         }
 
         bool operator!=(const const_iterator& it) const {
+          
           return (it != *this);
         }
 
         iterator& operator++() {
-          ++ptr;
+          if(ptr)
+            ++ptr;
           return *this;
         }
 
         iterator operator++(int) {
-          
-          return Iterator(ptr++);
+          if(ptr)
+            return Iterator(ptr++);
+          return *this;
         }
 
         operator const_iterator() const {
@@ -224,9 +240,7 @@ class Vector {
     };
     
     class ConstIterator {
-      friend Vector::difference_type operator-(const Vector::ConstIterator& lop , const Vector::ConstIterator& rop) {
-        return lop.ptr - rop.ptr; 
-      }
+      friend Vector::difference_type operator-(const Vector::ConstIterator& lop , const Vector::ConstIterator& rop);
       public:
         using value_type = Vector::value_type;
         using reference = Vector::const_reference;
@@ -238,8 +252,16 @@ class Vector {
       public:
         ConstIterator() : ptr{nullptr} {};
         ConstIterator(pointer ptr) : ptr{ptr} {};
-        reference operator*() const {return *ptr;}
-        pointer operator->() const {return ptr;}
+        reference operator*() const {
+          if(ptr == nullptr)
+            throw std::runtime_error("ptr is nullptr");
+          return *ptr;
+        }
+        pointer operator->() const {
+          if(ptr == nullptr)
+            throw std::runtime_error("ptr is nullptr");
+          return ptr;
+        }
 
         bool operator==(const const_iterator& it) const {
           return (ptr == it.ptr);
@@ -250,18 +272,22 @@ class Vector {
         }
 
         const_iterator& operator++() {
-          ++ptr;
+          if(ptr)
+            ++ptr;
           return *this;
         }
 
         const_iterator operator++(int) {
-          return ConstIterator(ptr++);
+          if(ptr)
+            return ConstIterator(ptr++);
+          return *this;
         }
     };
-
-    
-
 };
+
+Vector::difference_type operator-(const Vector::ConstIterator& lop , const Vector::ConstIterator& rop) {
+  return lop.ptr - rop.ptr; 
+}
 
 std::ostream& operator<<(std::ostream& o, const Vector& v) {
   o << "[";
