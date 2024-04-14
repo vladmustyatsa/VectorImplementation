@@ -2,13 +2,13 @@
 #define VECTOR_H
 #include<iostream>
 
-
+template<typename T>
 class Vector {
     public:
       public:
       class ConstIterator;
       class Iterator;
-      using value_type = double;
+      using value_type = T;
       using size_type = std::size_t;
       using difference_type = std::ptrdiff_t;
       using reference = value_type&;
@@ -160,8 +160,15 @@ class Vector {
           if (diff < 0 || static_cast<size_type>(diff) > sz)
             throw std::runtime_error("Iterator out of bounds");
           size_type current{static_cast<size_type>(diff)};
-          if (sz >= max_sz)
+          if (sz >= max_sz) {
+            if(max_sz == 0) {
+              values = new value_type[1];
+              max_sz = 1;
+              
+            } else {
             reserve(max_sz * 2); // Achtung Sonderfall, wenn keine Mindestgroesze definiert ist
+            }
+          }
           for (auto i{sz}; i-- > current;)
             values[i + 1] = values[i];
           values[current] = val;
@@ -240,7 +247,9 @@ class Vector {
     };
     
     class ConstIterator {
-      friend Vector::difference_type operator-(const Vector::ConstIterator& lop , const Vector::ConstIterator& rop);
+        friend  Vector::difference_type operator-(const Vector::ConstIterator& lop , const Vector::ConstIterator& rop) {
+          return lop.ptr - rop.ptr; 
+        }
       public:
         using value_type = Vector::value_type;
         using reference = Vector::const_reference;
@@ -285,14 +294,12 @@ class Vector {
     };
 };
 
-Vector::difference_type operator-(const Vector::ConstIterator& lop , const Vector::ConstIterator& rop) {
-  return lop.ptr - rop.ptr; 
-}
 
-std::ostream& operator<<(std::ostream& o, const Vector& v) {
+template<typename T>
+std::ostream& operator<<(std::ostream& o, const Vector<T>& v) {
   o << "[";
   bool first = true;
-  for(Vector::size_type i=0; i<v.size(); ++i)
+  for(typename Vector<T>::size_type i=0; i<v.size(); ++i)
     if (first) {
       first = false;
       o << v[0];

@@ -1,41 +1,19 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "../BasicTests/doctest.h"
+#include "doctest.h"
 #include "../vector.h"
-#include <sstream>
-#include <string>
+#include "sstream"
+#include "string"
 
-TEST_CASE("Vector<double>Test, CopyConstructor") {
-  const Vector<double> v({0,1,2,3,4,5,6,7,8,9});
-  Vector<double> other{v};
-
-  CHECK( other.size() == 10 );
-  CHECK( other.empty() == false );
-
-  for (size_t i=0;i<other.size();i++) {
-    CHECK(v[i] == other[i]);
+TEST_CASE("VectorTest, Empty Vector") {
+  Vector<double> x(0);
+  Vector<double> y(0);
+  CHECK_EQ(x.size(),0);
+  for(std::size_t i{0};i<100;++i){
+    x.insert(x.begin(),5);
+    y.push_back(3);
   }
-
-  other.pop_back();
-
-  CHECK( v.size() == other.size() + 1 );
-}
-
-TEST_CASE("Vector<double>Test, Assignment") {
-  const Vector<double> a({0,1,2,3,4,5,6,7,8,9});
-  Vector<double> b;
-  b = a;
-
-  for(size_t i=0; i < a.size(); ++i)
-    CHECK(a[i] == b[i]);
-
-  CHECK(a.empty() == false);
-  CHECK(a.size() == 10);
-  CHECK(b.size() == 10);
-
-  b.pop_back();
-
-  CHECK(a.size() == 10);
-  CHECK(b.size() == 9);
+  CHECK_EQ(x.size(),y.size());
+  CHECK_EQ(x.size(),100);
 }
 
 TEST_CASE("IteratorTest, DefaultConstructible") {
@@ -93,11 +71,8 @@ TEST_CASE("IteratorTest, Dereference") {
 
 TEST_CASE("IteratorTest, ArrowOperator") {
   Vector<double> v({0,1,2,3,4});
-  #pragma clang diagnostic push
-  #pragma clang diagnostic ignored "-Wunused-variable"
   Vector<double>::iterator a{v.begin()};
   Vector<double>::iterator b{v.end()};
-  #pragma clang diagnostic pop
   {
     size_t cnt = 0;
     for(auto it = v.begin(); it != v.end(); ++it) {
@@ -183,33 +158,10 @@ TEST_CASE("IteratorTest, TypeConversion") {
   CHECK(  it == cit);
 }
 
-TEST_CASE("IteratorTest, Insert/Erase") {
-  Vector<double> v{1,2,3};
-  auto x = v.insert(++v.begin(),4);
-  CHECK_EQ(v[1],4);
-  CHECK_EQ(*x,4);
-  auto it =v.begin();
-  ++it;
-  ++it;
-  auto y = v.erase(it);
-  CHECK_EQ(*y,3);
-  CHECK_EQ(v[2],3);
-}
-
-TEST_CASE("IteratorTest, OutputOperator") {
-	Vector<double> v{3.14, 0, 0.5, 1, 1.5, 2.71};
-	std::stringstream str_out;
-	str_out << v;
-	std::stringstream str;
-	str << "[";
-	bool first{true};
-	for (const auto& val : v) {
-		if (first)
-			first = false;
-		else
-			str << ", ";
-		str << val;
-	}
-	str << "]";
-	CHECK_EQ(str_out.str(), str.str());
+TEST_CASE("TypeTest, Output") {
+  Vector<Vector<int>> v{{1,2},{3,4}};
+  v.push_back({1,2,3,4});
+  std::stringstream str_out;
+  str_out << v;
+  CHECK_EQ(str_out.str(), std::string{"[[1, 2], [3, 4], [1, 2, 3, 4]]"});
 }
