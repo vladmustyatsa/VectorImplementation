@@ -9,7 +9,6 @@
 using namespace std;
 
 
-
 int main() {
   Vector<int> tmp;
   {
@@ -62,7 +61,7 @@ int main() {
   //cout << *max_element(vsm.begin(), vsm.end());
 
   // Print the smallest even number of vector vi (1 is not even.)
-
+  
 
   // Print the element with the most points of vector vsm.
 

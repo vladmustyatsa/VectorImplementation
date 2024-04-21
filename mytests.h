@@ -4,6 +4,7 @@
 #include<map>
 #include<exception>
 #include<iostream>
+#include<string>
 using namespace std;
 
 
@@ -567,5 +568,18 @@ bool iterator_constancy() {
   auto it = v.begin();
   //*it = 1; //check "constancy" by uncommenting it
   return true;
+}
+
+bool templates() {
+  Vector<int> v1 {1,2,3};
+  Vector<char> v2 {'a', 'b', 'c'};
+  v2.push_back('a');
+  Vector<string> v3 {"asd","123", "qwe"};
+  v3.push_back("oiu");
+  Vector<int*> v4;
+  v4.push_back(&v1[0]);
+  *v4[0] = 0;
+  bool case1 = (v1[0] == 0);
+  return case1;
 }
 #endif
