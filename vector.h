@@ -190,7 +190,6 @@ class Vector {
 				~Vector() {
 					if (values){
 						delete[] values;  
-						//cout << "del" << endl;
 					}
 				}
     class Iterator {

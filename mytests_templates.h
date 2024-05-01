@@ -5,12 +5,17 @@
 #include<exception>
 #include<iostream>
 #include<string>
+#include<algorithm>
 using namespace std;
 
 
 void check(map<string, bool> map) {
   for(auto& pair: map)
     cout << pair.first << ": " << (pair.second ? "Passed" : "FAILED") << endl;
+  bool all_passed = all_of(map.begin(), map.end(), [](const auto& pair) {
+    return pair.second;
+  });
+  cout << "Status: " << ((all_passed) ? "SUCCESS" : "FAILED!!!") << endl;;
   //cout << (flag ? "True" : "False") << endl;
 }
 template<typename T>
