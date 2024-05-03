@@ -4,8 +4,8 @@
 
 template<typename T>
 class Vector {
+    
     public:
-      public:
       class ConstIterator;
       class Iterator;
       using value_type = T;
